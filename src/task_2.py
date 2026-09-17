@@ -40,7 +40,7 @@ class ModelWindow:
 
     def display(self):
         print(f'\nСостояние окна {self.title}')
-        print(f'Координаты (X, Y): ({self.x}, {self.y})')
+        print(f'Координаты (X, Y): {self.x}, {self.y}')
         print(f'Размеры (Ш x В): {self.width} x {self.height}')
         print(f'Цвет окна: {self.color}')
         print(f'Видимость: {'Видимое' if self.visible else 'Невидимое'}')
@@ -52,8 +52,13 @@ class ModelWindow:
 
         while True:
             try:
-                self.x = int(input('Введите координату X: '))
-                self.y = int(input('Введите координату Y: '))
+                x = int(input('Введите координату X: '))
+                y = int(input('Введите координату Y: '))
+                if x > self.screenX or y > self.screenY or x < 0 or y < 0:
+                    print('Угол окна не должен выходить за пределы экрана')
+                    continue
+                self.x = x
+                self.y = y
                 break
             except ValueError:
                 print('Координаты должны быть целыми числами. Попробуйте снова.')
@@ -64,6 +69,9 @@ class ModelWindow:
                 h = int(input('Введите высоту окна: '))
                 if w <= 0 or h <= 0:
                     print('Ширина и высота должны быть больше нуля')
+                    continue
+                if self.x + w > self.screenX or self.y + h > self.screenY:
+                    print('Окно не должно вылезать за рамки')
                     continue
                 self.width = w
                 self.height = h
@@ -138,7 +146,7 @@ if __name__ == "__main__":
     my_window.display()
 
     my_window.shift(200, 50)
-    my_window.shift(1000, 0)
+    my_window.shift(1700, 0)
     my_window.display()
 
     my_window.resize(800, 600)
